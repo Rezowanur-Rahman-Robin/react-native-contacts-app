@@ -8,7 +8,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { LOGIN, REGISTER } from "../../constants/routeNames";
 
-const RegisterComponent = ({ onSubmit, onChange, form, errors }) => {
+const RegisterComponent = ({
+  onSubmit,
+  onChange,
+  form,
+  errors,
+  error,
+  loading,
+}) => {
   const { navigate } = useNavigation();
 
   return (
@@ -76,7 +83,8 @@ const RegisterComponent = ({ onSubmit, onChange, form, errors }) => {
           <CustomButton
             onPress={onSubmit}
             title="Sign up"
-            loading={false}
+            loading={loading}
+            disabled={loading}
             primary
           />
 

@@ -1,11 +1,38 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import RegisterComponent from "../../components/SignUp";
 import { validateEmail } from "../../utils/Validation";
+import envs from "../../config/env";
+import axiosInstance from "../../helpers/axiosInstance";
+import register from "../../context/actions/auth/register";
+import { GlobalContext } from "../../context/Provider";
+import { LOGIN } from "../../constants/routeNames";
 
 function SignUp() {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
+  const {
+    authDispatch,
+    authState: { error, loading, data },
+  } = useContext(GlobalContext);
+
+  const { BACKEND_URL } = envs;
+
+  // console.log("BACKEND URL:", BACKEND_URL);
+
+  // useEffect(() => {
+  //   axiosInstance.get("/contacts").catch((err) => {
+  //     console.log("Error:>>>", err.response);
+  //   });
+  // }, []);
+  useEffect(
+    () => {
+      console.log("Success", data);
+      console.log("Error", error);
+    },
+    data,
+    error
+  );
 
   const onChange = ({ name, value }) => {
     setForm({ ...form, [name]: value });
@@ -78,6 +105,16 @@ function SignUp() {
         return { ...prev, password: "Please add a password" };
       });
     }
+
+    if (
+      Object.values(form).length === 5 &&
+      Object.values(form).every((item) => item.trim().length > 0) &&
+      Object.values(errors).every((item) => !item)
+    ) {
+      register(form)(authDispatch)((response) => {
+        navigate(LOGIN, { data: response });
+      });
+    }
   };
 
   return (
@@ -86,6 +123,8 @@ function SignUp() {
       onChange={onChange}
       form={form}
       errors={errors}
+      error={error}
+      loading={loading}
     />
   );
 }
