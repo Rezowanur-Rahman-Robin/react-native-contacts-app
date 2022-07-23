@@ -1,9 +1,16 @@
 import {
+  CLEAR_AUTH_STATE,
   REGISTER_FAIL,
   REGISTER_LOADING,
   REGISTER_SUCCESS,
 } from "../../../constants/actionTypes";
 import axiosInstance from "../../../helpers/axiosInstance";
+
+export const clearAuthState = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_AUTH_STATE,
+  });
+};
 
 export default ({
     email,

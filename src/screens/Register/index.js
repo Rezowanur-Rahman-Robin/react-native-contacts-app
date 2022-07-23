@@ -4,9 +4,10 @@ import RegisterComponent from "../../components/SignUp";
 import { validateEmail } from "../../utils/Validation";
 import envs from "../../config/env";
 import axiosInstance from "../../helpers/axiosInstance";
-import register from "../../context/actions/auth/register";
+import register, { clearAuthState } from "../../context/actions/auth/register";
 import { GlobalContext } from "../../context/Provider";
 import { LOGIN } from "../../constants/routeNames";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 function SignUp() {
   const [form, setForm] = useState({});
@@ -15,6 +16,8 @@ function SignUp() {
     authDispatch,
     authState: { error, loading, data },
   } = useContext(GlobalContext);
+
+  const { navigate } = useNavigation();
 
   const { BACKEND_URL } = envs;
 
@@ -25,14 +28,28 @@ function SignUp() {
   //     console.log("Error:>>>", err.response);
   //   });
   // }, []);
-  useEffect(
-    () => {
-      console.log("Success", data);
-      console.log("Error", error);
-    },
-    data,
-    error
+
+  // useEffect(() => {
+  //   if (data) {
+  //     navigate(LOGIN);
+  //   }
+  // }, [data]);
+
+  //for removing previous registration data
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        if (data || error) {
+          clearAuthState()(authDispatch);
+        }
+      };
+    }, [data, error])
   );
+
+  useEffect(() => {
+    data && console.log("Success", data);
+    error && console.log("Error", error);
+  }, [data, error]);
 
   const onChange = ({ name, value }) => {
     setForm({ ...form, [name]: value });

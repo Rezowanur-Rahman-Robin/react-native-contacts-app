@@ -7,8 +7,9 @@ import styles from "./styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { REGISTER } from "../../constants/routeNames";
+import Message from "../Common/Message";
 
-const LoginComponent = () => {
+const LoginComponent = ({ error, onChange, loading, onSubmit }) => {
   const { navigate } = useNavigation();
 
   return (
@@ -25,10 +26,23 @@ const LoginComponent = () => {
         <Text style={styles.subTitle}>Please login here</Text>
 
         <View style={styles.form}>
+          {error && !error.error && (
+            <Message
+              // retry
+              //retryFn={() => console.log("Retrying...")}
+              onDismiss={() => {}}
+              danger
+              message="Invalid credentials"
+            />
+          )}
+          {error?.error && <Message danger onDismiss message={error?.error} />}
+
           <Input
             label="Username"
             placeholder="Enter Username"
-            //  error={"This field is required."}
+            onChangeText={(value) => {
+              onChange({ name: "userName", value });
+            }}
           />
 
           <Input
@@ -37,9 +51,18 @@ const LoginComponent = () => {
             iconPosition="right"
             placeholder="Enter Password"
             secureTextEntry={true}
+            onChangeText={(value) => {
+              onChange({ name: "password", value });
+            }}
           />
 
-          <CustomButton title="Submit" loading={false} primary />
+          <CustomButton
+            onPress={onSubmit}
+            title="Submit"
+            loading={loading}
+            disabled={loading}
+            primary
+          />
 
           <View style={styles.createSection}>
             <Text style={styles.infoText}>Need a new account?</Text>
