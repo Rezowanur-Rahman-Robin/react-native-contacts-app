@@ -4,8 +4,9 @@ import Container from "../../components/Common/Container";
 import styles from "./styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LOGOUT, SETTINGS } from "../../constants/routeNames";
+import logoutUser from "../../context/actions/auth/logoutUser";
 
-const SideMenu = ({ navigation }) => {
+const SideMenu = ({ navigation, authDispatch }) => {
   const handleLogout = () => {
     navigation.toggleDrawer();
     Alert.alert("Logout!", "Are you sure to logout?", [
@@ -15,7 +16,9 @@ const SideMenu = ({ navigation }) => {
       },
       {
         text: "OK",
-        onPress: () => {},
+        onPress: () => {
+          logoutUser()(authDispatch);
+        },
       },
     ]);
   };

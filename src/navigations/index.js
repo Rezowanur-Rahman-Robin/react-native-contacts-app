@@ -25,13 +25,15 @@ const AppNavContainer = () => {
       }
     } catch (error) {}
   };
-  useEffect(() => {
-    getUser();
-  }, []);
 
   const {
     authState: { isLoggedIn },
   } = useContext(GlobalContext);
+
+  useEffect(() => {
+    getUser();
+    console.log(isLoggedIn);
+  }, [isLoggedIn]);
 
   return (
     <>

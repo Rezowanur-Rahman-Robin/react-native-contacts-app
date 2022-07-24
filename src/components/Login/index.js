@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import Container from "../Common/Container";
 import Input from "../Common/Input";
@@ -11,6 +11,7 @@ import Message from "../Common/Message";
 
 const LoginComponent = ({ error, onChange, loading, onSubmit }) => {
   const { navigate } = useNavigation();
+  const [isSecureEntry, setIsSecureEntry] = useState(true);
 
   return (
     <Container>
@@ -47,10 +48,16 @@ const LoginComponent = ({ error, onChange, loading, onSubmit }) => {
 
           <Input
             label="Password"
-            icon={<Text> Show </Text>}
+            icon={
+              <TouchableOpacity
+                onPress={() => setIsSecureEntry((prev) => !prev)}
+              >
+                <Text> {isSecureEntry ? "Show" : "Hide"} </Text>
+              </TouchableOpacity>
+            }
             iconPosition="right"
             placeholder="Enter Password"
-            secureTextEntry={true}
+            secureTextEntry={isSecureEntry}
             onChangeText={(value) => {
               onChange({ name: "password", value });
             }}
