@@ -32,7 +32,7 @@ const AppNavContainer = () => {
 
   useEffect(() => {
     getUser();
-    console.log(isLoggedIn);
+    //console.log(isLoggedIn);
   }, [isLoggedIn]);
 
   return (

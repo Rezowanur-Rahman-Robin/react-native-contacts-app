@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import Container from "../Common/Container";
 import Input from "../Common/Input";
 import CustomButton from "../Common/CustomButton";
 import styles from "./styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { REGISTER } from "../../constants/routeNames";
 import Message from "../Common/Message";
 
-const LoginComponent = ({ error, onChange, loading, onSubmit }) => {
+const LoginComponent = ({
+  error,
+  justSignedUp,
+  onChange,
+  form,
+  loading,
+  onSubmit,
+}) => {
   const { navigate } = useNavigation();
   const [isSecureEntry, setIsSecureEntry] = useState(true);
 
@@ -27,6 +34,14 @@ const LoginComponent = ({ error, onChange, loading, onSubmit }) => {
         <Text style={styles.subTitle}>Please login here</Text>
 
         <View style={styles.form}>
+          {justSignedUp && (
+            <Message
+              onDismiss={() => {}}
+              success
+              message="Account Created Successfully!"
+            />
+          )}
+
           {error && !error.error && (
             <Message
               // retry
@@ -40,6 +55,7 @@ const LoginComponent = ({ error, onChange, loading, onSubmit }) => {
 
           <Input
             label="Username"
+            value={form.userName || null}
             placeholder="Enter Username"
             onChangeText={(value) => {
               onChange({ name: "userName", value });
