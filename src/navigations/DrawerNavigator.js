@@ -4,14 +4,23 @@ import { Text, View } from "react-native";
 import HomeNavigator from "./HomeNavigator";
 import AuthNavigator from "./AuthNavigator";
 import { HOME_NAVIGATOR } from "../constants/routeNames";
+import SideMenu from "./SideMenu";
+
+const getDrawerContent = (navigation) => {
+  return <SideMenu navigation={navigation} />;
+};
 
 function DrawerNavigator() {
   const Drawer = createDrawerNavigator();
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      drawerType="slide"
+      drawerContent={({ navigation }) => getDrawerContent(navigation)}
+    >
       <Drawer.Screen
         name={HOME_NAVIGATOR}
         component={HomeNavigator}
+        options={{ headerShown: false }}
       ></Drawer.Screen>
     </Drawer.Navigator>
   );

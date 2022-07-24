@@ -15,7 +15,10 @@ import Settings from "../screens/Settings";
 function HomeNavigator() {
   const HomeStack = createStackNavigator();
   return (
-    <HomeStack.Navigator initialRouteName={CONTACT_LIST}>
+    <HomeStack.Navigator
+      initialRouteName={CONTACT_LIST}
+      screenOptions={{ headerTitleAlign: "center" }}
+    >
       <HomeStack.Screen
         name={CONTACT_LIST}
         component={Contacts}
